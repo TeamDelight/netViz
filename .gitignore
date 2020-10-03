@@ -1,6 +1,6 @@
 #user Files here
-.vscode
 .netViz
+.idea/
 */*.pyc
 
 # Byte-compiled / optimized / DLL files
@@ -132,3 +132,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vscode
