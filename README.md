@@ -1,2 +1,0 @@
-# netViz
-netviz hackathon project
