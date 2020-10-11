@@ -133,3 +133,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .vscode
+sample_networkx_file.py
+data.json
+test.adjlist.txt
+test.json
+test1 copy.txt
+test1.txt
