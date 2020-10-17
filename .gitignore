@@ -1,6 +1,6 @@
 #user Files here
 .netViz
-.idea/
+.idea/once you
 */*.pyc
 
 # Byte-compiled / optimized / DLL files
@@ -139,3 +139,5 @@ test.adjlist.txt
 test.json
 test1 copy.txt
 test1.txt
+netviz.code-workspace
+python_doc_string.mustache

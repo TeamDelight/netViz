@@ -1,3 +1,15 @@
+"""************************************************************************************************
+                                        Team Delight - NetViz
+Author: Team Delight
+Description: Module for web pages
+
+Modification History:
+Date        Changed by              Description
+04-10-2020  Marish_Varadaraj        Flask based UI, with initial pages.
+                                    index; login; logout methods created.
+
+************************************************************************************************"""
+
 from flask import Flask, flash,render_template, redirect, url_for, request
 from app import app
 from app.main.forms import LoginForm
@@ -6,12 +18,25 @@ from app.models.models import User
 from werkzeug.urls import url_parse
 
 
+"""Initial login page for the netviz application
+Description: main page of netviz application
+
+Returns:
+    Index page for rendering in flask
+"""
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
     return render_template("index.html")
 
+
+"""Verifying if the user is authenticated.
+Description: This function authenticates if the current user is authenticated.
+for the complete session of execution.
+Returns:
+    pages that are rendered based on the activity
+    """
 @app.route('/login', methods=["GET","POST"])
 def login():
     if current_user.is_authenticated:
@@ -29,6 +54,14 @@ def login():
         return redirect(next_page)
     return render_template("login.html", title="Sign In", form=login_form)
 
+
+"""
+Logout the user from the application.
+    Description: This function authenticates if the current user is authenticated.
+    for the complete session of execution.
+Returns:
+    logout page for rendering in flask
+    """
 @app.route('/logout')
 def logout():
     logout_user()
