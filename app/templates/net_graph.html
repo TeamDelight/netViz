@@ -1,43 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %} {% block title %} Home Page {% endblock %}
 
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/app/static/main.css'>
+{% block content %}
+
+
+<div id="fullGraph">
     <script src="//d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript">
+        var root = "{{ data | safe }}"
+    </script>
 
-</head>
-
-<body>
-    <div id="fullGraph">
-        <script src='/app/static/main.js'></script>
-
-        <div id="sliderGroup">
-            <table id="sliderTable">
-                <tr>
-                    <th class="tableTitle" id="tableHeader">Effects</th>
-                    <th class="tableTitle" id="tableHeaderBlank"></th>
-                </tr>
-                <tr>
-                    <td> Node Distance </td>
-                    <td><input type="range" min="1" max="100" value="50" step="10" class=" slider " id="NodeDistance " onchange="update_nodeDistance(this.value) "></td>
-                </tr>
-                <tr>
-                    <td> Attraction </td>
-                    <td><input type="range" min="-3000" max="0" value="-1500" step="300" class=" slider " id="NodeDistance " onchange="update_attraction(this.value) "></td>
-                </tr>
-                <tr>
-                    <td> Stiffness </td>
-                    <td><input type="range" min=".1" max="1" value=".5" step=".01" class=" slider " id="NodeDistance " onchange="update_stiffness(this.value) "></td>
-                </tr>
-            </table>
-        </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='graph_gen.js') }}"></script>
+    <div id="sliderGroup">
+        <table id="sliderTable">
+            <tr>
+                <th class="tableTitle" id="tableHeader">Effects</th>
+                <th class="tableTitle" id="tableHeaderBlank"></th>
+            </tr>
+            <tr>
+                <td> Node Distance </td>
+                <td><input type="range" min="1" max="100" value="50" step="10" class=" slider " id="NodeDistance "
+                        onchange="update_nodeDistance(this.value) "></td>
+            </tr>
+            <tr>
+                <td> Attraction </td>
+                <td><input type="range" min="-3000" max="0" value="-1500" step="300" class=" slider " id="NodeDistance "
+                        onchange="update_attraction(this.value) "></td>
+            </tr>
+            <tr>
+                <td> Stiffness </td>
+                <td><input type="range" min=".1" max="1" value=".5" step=".01" class=" slider " id="NodeDistance "
+                        onchange="update_stiffness(this.value) "></td>
+            </tr>
+        </table>
     </div>
-
-</body>
-
-
-</html>
+</div>
+{% endblock %}

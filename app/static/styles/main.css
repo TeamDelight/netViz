@@ -1,0 +1,36 @@
+body {
+    background-color: antiquewhite;
+}
+
+#fullGraph {
+    margin-top: 5%;
+}
+
+#graph {
+    background-color: white;
+    margin-left: 5%;
+    padding: 20px;
+}
+
+.node circle {
+    cursor: pointer;
+    stroke: #3182bd;
+    stroke-width: 12;
+}
+
+line.link {
+    fill: none;
+    stroke: #b1e3e6;
+    stroke-width: 2px;
+}
+
+#sliderGroup {
+    position: relative;
+    float: right;
+    background-color: aqua;
+    margin-right: 2%;
+}
+
+.tableTitle {
+    text-align: left;
+}

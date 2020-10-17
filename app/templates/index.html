@@ -1,3 +1,34 @@
 {% extends "base.html" %} {% block title %} Home Page {% endblock %} {% block content %}
-<h1>Hi, {{ current_user.username }}</h1>
-{% endblock %}
+<h1>Hi,{{ current_user.username }}</h1>
+<p>test</p>
+<div class="container">
+    <form action="/search" method="POST">
+        <p><input id="autocomplete" type="text" name="autocomp" class="form-control" onkeydown="searchAutoComplete()">
+            <button type="submit" value="Search">Search</button>
+        </p>
+    </form>
+</div>
+
+{% if resulted_dict %}
+<div>
+    <table id=search_result_table>
+        <caption>Search Results fetched for
+            <span>{{resulted_dict[0].name}}</span></caption>
+        <th id="search_table">
+            <td> Customer ID </td>
+            <td> Customer Name </td>
+            <td> Phone Number </td>
+            <td> Address </td>
+        </th>
+        {% for result in resulted_dict %}
+        <tr>
+            <td> {{ result.id }} </td>
+            <td><a href="{{url_for('graph_generation',customer_id = result.id)}}">{{ result.name }}</a> </td>
+            <td>{{ result.phone }}</td>
+            <td>{{ result.Address }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% else %}
+<p> no results found!</p> {% endif %} {% endblock %}
