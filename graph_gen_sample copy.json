@@ -1,0 +1,151 @@
+{
+    "name": "Customer",
+    "data": "01212101",
+    "children": [{
+            "name": "Account",
+            "data": "1010101010",
+            "children": [{
+                    "name": "Account2"
+                },
+                {
+                    "name": "Account3"
+                },
+                {
+                    "name": "Account4"
+                }, {
+                    "name": "Account1",
+                    "children": [{
+                        "name": "Account5",
+                        "account_no": "01212101"
+                    }]
+                }
+            ]
+        },
+        {
+            "name": "Dependent",
+            "children": [{
+                "name": "Dependent1",
+                "relationship": "wife"
+            }, {
+                "name": "Dependent2",
+                "relationship": "kid1"
+            }, {
+                "name": "Dependent3",
+                "relationship": "kid2"
+            }, {
+                "name": "Dependent4",
+                "relationship": "mom"
+            }]
+        },
+        {
+            "name": "transaction",
+            "children": [{
+                "name": "transaction1"
+            }, {
+                "name": "transaction2"
+            }, {
+                "name": "transaction3"
+            }, {
+                "name": "transaction4",
+                "children": [{
+                    "name": "transaction1",
+                    "children": [{
+                        "name": "transaction1"
+                    }, {
+                        "name": "transaction2"
+                    }, {
+                        "name": "transaction3"
+                    }, {
+                        "name": "transaction4"
+                    }]
+                }, {
+                    "name": "transaction2"
+                }, {
+                    "name": "transaction3"
+                }, {
+                    "name": "transaction4",
+                    "children": [{
+                        "name": "transaction1"
+                    }, {
+                        "name": "transaction2"
+                    }, {
+                        "name": "transaction3"
+                    }, {
+                        "name": "transaction4",
+                        "children": [{
+                            "name": "transaction1"
+                        }, {
+                            "name": "transaction2"
+                        }, {
+                            "name": "transaction3"
+                        }, {
+                            "name": "transaction4",
+                            "children": [{
+                                "name": "transaction1"
+                            }, {
+                                "name": "transaction2"
+                            }, {
+                                "name": "transaction3"
+                            }, {
+                                "name": "transaction4",
+                                "children": [{
+                                    "name": "transaction1"
+                                }, {
+                                    "name": "transaction2"
+                                }, {
+                                    "name": "transaction3"
+                                }, {
+                                    "name": "transaction4",
+                                    "children": [{
+                                        "name": "transaction1"
+                                    }, {
+                                        "name": "transaction2"
+                                    }, {
+                                        "name": "transaction3"
+                                    }, {
+                                        "name": "transaction4",
+                                        "children": [{
+                                            "name": "transaction1"
+                                        }, {
+                                            "name": "transaction2"
+                                        }, {
+                                            "name": "transaction3"
+                                        }, {
+                                            "name": "transaction4",
+                                            "children": [{
+                                                "name": "transaction1"
+                                            }, {
+                                                "name": "transaction2"
+                                            }, {
+                                                "name": "transaction3"
+                                            }, {
+                                                "name": "transaction4",
+                                                "children": [{
+                                                    "name": "transaction1"
+                                                }, {
+                                                    "name": "transaction2"
+                                                }, {
+                                                    "name": "transaction3"
+                                                }, {
+                                                    "name": "transaction4"
+                                                }]
+                                            }]
+                                        }]
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            }]
+        }, {
+            "name": "address",
+            "children": [{
+                "name": "office"
+            }, {
+                "name": "home"
+
+            }]
+        }
+    ]
+}
