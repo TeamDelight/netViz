@@ -10,12 +10,14 @@ Date        Changed by              Description
 
 ************************************************************************************************"""
 
-from flask import Flask, flash,render_template, redirect, url_for, request
+import os
+from flask import Flask, flash,render_template, redirect, url_for, request, Response
 from app import app
 from app.main.forms import LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models.models import User
 from werkzeug.urls import url_parse
+import json
 
 
 """Initial login page for the netviz application
@@ -66,3 +68,42 @@ Returns:
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+
+names_list=["Sam","Smile","Kumar","Kartik","Happy","Joy","123 address", "15 dovetail", "angel"]
+
+@app.route('/autocomplete',methods=['GET','POST'])
+def autocomplete():
+    #Have database Query to retrive customer names here
+    return Response(json.dumps(names_list), mimetype='application/json')
+
+
+@app.route("/search",methods=['POST'])
+def search():
+    customer_search=request.form['autocomplete']
+    if customer_search in names_list:
+    #need to fetch customer data from the database
+        data_dict=[{"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
+                {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
+                {"id":3,"name":"Kumar","phone":5768797,"Address":"Melbourne"}]
+        resulted_dict=[]
+        for p in data_dict:
+            if p['name'] == customer_search:
+                resulted_dict.append(p)
+        return render_template("index.html",resulted_dict=resulted_dict)
+    else:
+        return render_template("index.html", customer_search=customer_search)
+
+@app.route("/graph_generation/<customer_id>")
+def graph_generation(customer_id):
+    file_location = os.getcwd().replace("\\","/") + "/graph_gen_sample.json"
+    return render_template("net_graph.html", data = jsonData(file_location))
+
+
+def jsonData(filePath):
+    with open(filePath) as graph_data:
+        data = json.load(graph_data)
+        return str(data)
+
+

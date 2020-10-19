@@ -62,6 +62,35 @@
                     "name": "transaction2"
                 }, {
                     "name": "transaction3"
+                }, {
+                    "name": "transaction4",
+                    "children": [{
+                        "name": "transaction1"
+                    }, {
+                        "name": "transaction2"
+                    }, {
+                        "name": "transaction3"
+                    }, {
+                        "name": "transaction4",
+                        "children": [{
+                            "name": "transaction1"
+                        }, {
+                            "name": "transaction2"
+                        }, {
+                            "name": "transaction3"
+                        }, {
+                            "name": "transaction4",
+                            "children": [{
+                                "name": "transaction1"
+                            }, {
+                                "name": "transaction2"
+                            }, {
+                                "name": "transaction3"
+                            }, {
+                                "name": "transaction4"
+                            }]
+                        }]
+                    }]
                 }]
             }]
         }, {
