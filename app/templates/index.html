@@ -1,15 +1,18 @@
-{% extends "base.html" %} {% block title %} Home Page {% endblock %} {% block content %}
+{% extends "base.html" %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block page_content %}
 <h1>Hi,{{ current_user.username }}</h1>
-<p>test</p>
+
 <div class="container">
     <form action="/search" method="POST">
-        <p><input id="autocomplete" type="text" name="autocomp" class="form-control" onkeydown="searchAutoComplete()">
-            <button type="submit" value="Search">Search</button>
-        </p>
+        <p><input id="autocomplete" type="text" name="autocomplete" class="form-control" onkeydown="searchAutoComplete()"></p>
     </form>
 </div>
 
 {% if resulted_dict %}
+{% if resulted_dict|length > 0 %}
 <div>
     <table id=search_result_table>
         <caption>Search Results fetched for
@@ -30,5 +33,8 @@
         {% endfor %}
     </table>
 </div>
-{% else %}
-<p> no results found!</p> {% endif %} {% endblock %}
+{% endif %}
+{% elif customer_search|length > 0 %}
+<p>No records found for <span id="customer_search">{{customer_search}}</span></p>
+{% endif %}
+{% endblock %}

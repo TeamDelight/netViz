@@ -1,12 +1,12 @@
 {% extends "base.html" %} {% block title %} Home Page {% endblock %}
 
-{% block content %}
-
+{% block page_content %}
 
 <div id="fullGraph">
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script type="text/javascript">
         var root = "{{ data | safe }}"
+        var images_path = "{{ url_for('static', filename='graph_imgs') }}"
     </script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='graph_gen.js') }}"></script>
@@ -31,7 +31,13 @@
                 <td><input type="range" min=".1" max="1" value=".5" step=".01" class=" slider " id="NodeDistance "
                         onchange="update_stiffness(this.value) "></td>
             </tr>
+            <tr>
+                <td> Hold Elements </td>
+                <td><input type="checkbox" id="element_hold" onchange="element_hold()"></td>
+                </td>
+            </tr>
         </table>
     </div>
 </div>
+<a href="{{ url_for('index') }}">Back</a>
 {% endblock %}

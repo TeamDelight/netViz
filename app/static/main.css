@@ -34,3 +34,9 @@ line.link {
 .tableTitle {
     text-align: left;
 }
+
+.ui-autocomplete {
+    z-index: 10000000;
+  }
+
+.ui-helper-hidden-accessible { display:none; }

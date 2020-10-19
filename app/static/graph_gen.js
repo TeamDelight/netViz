@@ -3,8 +3,8 @@ root = eval("(" + root + ')');
 var width = window.innerWidth * .8,
     height = window.innerHeight * .8,
     root,
-    gravity = 0.2,
-    charge = -1800,
+    gravity = 0.3,
+    charge = -2000,
     linkStrength = 1,
     count = 0,
     root_element, linkDistance = width * 0.05;
@@ -38,7 +38,11 @@ var force = d3.layout.force()
     .size([width, height])
     .on("tick", tick);
 
+
+root.fixed = true;
+root_element = root.name;
 update();
+root.children.fixed = true;
 
 function update() {
     var nodes = getNodes(root),
@@ -49,7 +53,7 @@ function update() {
         .links(links)
         .start();
 
-    node = node.data(nodes, function(d) {
+    node = node.data(nodes, function (d) {
         return d.id;
     });
 
@@ -58,8 +62,8 @@ function update() {
 
     var nodeEnter = node.enter().append("g")
         .attr("class", "node")
-        .on('mousedown', function() { startTime = new Date(); })
-        .on('mouseup', function(d) {
+        .on('mousedown', function () { startTime = new Date(); })
+        .on('mouseup', function (d) {
             endTime = new Date();
             if ((endTime - startTime) < 300) {
                 click(d);
@@ -68,26 +72,26 @@ function update() {
         .call(force.drag);
 
     nodeEnter.append('image')
-        .attr('xlink:href', function(d) {
-            return '/app/static/graph_imgs/' + get_name(d.name) + ".png";
+        .attr('xlink:href', function (d) {
+            return images_path + "\\" + get_name(d.name) + ".png";
         })
-        .attr("x", function(d) { return -25; })
-        .attr("y", function(d) { return -25; })
+        .attr("x", function (d) { return -25; })
+        .attr("y", function (d) { return -25; })
         .attr("height", 50)
         .attr("width", 50);
 
     nodeEnter.append("text")
-        .attr("dy", function(d) { return 40; })
-        .attr("dx", function(d) { return -25; })
+        .attr("dy", function (d) { return 40; })
+        .attr("dx", function (d) { return -25; })
         .attr("class", "texts")
-        .text(function(d) {
+        .text(function (d) {
             return d.name;
         });
 
     node.exit().remove();
 
 
-    link = link.data(links, function(d) {
+    link = link.data(links, function (d) {
         return d.target.id;
     });
 
@@ -122,33 +126,32 @@ function isDirectChild(val) {
 
 function tick() {
 
-    link.attr("x1", function(d) {
+    link.attr("x1", function (d) {
 
-            if (d.source.name.value == d.root_element && (isDirectChild(d.target.name))) {
-                return width / 2;
-            }
-            return d.source.x;
-        })
-        .attr("y1", function(d) {
+        if (d.source.name.value == d.root_element && (isDirectChild(d.target.name))) {
+            return width / 2;
+        }
+        return d.source.x;
+    })
+        .attr("y1", function (d) {
             if (d.target.name.value == d.root_element && (isDirectChild(d.target.name))) {
                 return height / 2;
             }
             return d.source.y;
         })
-        .attr("x2", function(d) {
+        .attr("x2", function (d) {
             return d.target.x;
         })
-        .attr("y2", function(d) {
+        .attr("y2", function (d) {
             return d.target.y;
         });
 
-    node.attr("transform", function(d) {
+    node.attr("transform", function (d) {
         let translate;
         if (root_element != d.name) {
-
             translate = "translate(" + d.x + "," + d.y + ")";
         } else if (d.y > height || d.x > width) {
-            d.x = Math.max(50, Math.min(width, d.x));
+            d.x = Math.max(25, Math.min(width, d.x));
             d.y = Math.max(25, Math.min(height - 25, d.y));
             translate = "translate(" + d.x + "," + d.y + ")";
 
@@ -176,7 +179,7 @@ function getNodes(root) {
 
 function get_name(name) {
     let isNum = false
-    console.log(name);
+
     let lastChar;
     while (!isNum) {
         lastChar = name.substr(-1);
@@ -206,4 +209,24 @@ function update_stiffness(val) {
     force
         .gravity(val)
         .start();
+}
+
+function element_hold() {
+    let val = document.getElementById("element_hold");
+
+    if (val.checked) {
+        var drag = force.drag()
+            .on("dragstart", dragstart);
+        function dragstart(d) {
+            d3.select(this).classed("fixed", d.fixed = true);
+        }
+
+    } else {
+        var drag = force.drag()
+            .on("dragstart", dragstart);
+        function dragstart(d) {
+            d3.select(this).classed("fixed", d.fixed = false);
+        }
+    }
+    update();
 }
