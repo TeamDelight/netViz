@@ -1,60 +1,49 @@
-{% extends "bootstrap/base.html" %}
+<!DOCTYPE html>
+<html lang='en'>
 
-{% block head %}
-{{ super() }}
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script async src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" /> {% block title %}{% endblock %}
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script async src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel= "stylesheet" type= "text /css" href= "{{ url_for('static',filename='styles/main.css') }}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link rel="stylesheet"  href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}?q" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
-{% endblock %}
-
-{% block title %}NetViz{% endblock %}
-
-{% block navbar %}
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{{ url_for('index') }}">NetViz</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('index') }}">Home<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('login') }}">Login<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('logout') }}">logout<span class="sr-only">(current)</span></a>
-        </li>
+<body>
+    {% if current_user.is_authenticated %}
+    <div class="topnav">
+        <div class="netviz">
+            <a href=" {{ url_for('index') }}"><span id="net">Net</span><span id="viz">Viz</span></a></li>
+        </div>
+        <a href="{{ url_for('index') }}">Home</a></li>
+        <div class="topnav-right">
+            <a href="{{ url_for('logout') }}">Logout</a></class=>
+        </div>
     </div>
-  </nav>
-{% endblock %}
-
-{% block content %}
-
-<div class="container">
-
-    <hr> {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
-
+    {% endif %}
+    <div class="flash_message">
+        <hr> {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+    </div>
     {% block page_content %}{% endblock %}
-</div>
-<script type="text/javascript" src="{{ url_for('static', filename='main.js')}}"></script>
-{% endblock %}
+    <script type="text/javascript" src="{{ url_for('static', filename='main.js' )}}"></script>
+</body>
 
-{% block scripts %}
-{{ super() }}
-{% endblock %}
+</html>

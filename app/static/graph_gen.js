@@ -3,8 +3,8 @@ root = eval("(" + root + ')');
 var width = window.innerWidth * .8,
     height = window.innerHeight * .8,
     root,
-    gravity = 0.3,
-    charge = -2000,
+    gravity = 0.5,
+    charge = -3000,
     linkStrength = 1,
     count = 0,
     root_element, linkDistance = width * 0.05;
@@ -43,6 +43,13 @@ root.fixed = true;
 root_element = root.name;
 update();
 root.children.fixed = true;
+
+
+var drag = force.drag()
+.on("dragstart", dragstart);
+function dragstart(d) {
+d3.select(this).classed("fixed", d.fixed = true);
+}
 
 function update() {
     var nodes = getNodes(root),

@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %} Home Page {% endblock %}
+{% extends "base.html" %}
 
 {% block page_content %}
 
@@ -14,7 +14,7 @@
         <table id="sliderTable">
             <tr>
                 <th class="tableTitle" id="tableHeader">Effects</th>
-                <th class="tableTitle" id="tableHeaderBlank"></th>
+                <th class="tableTitle" id="tableHeaderBlank">Values</th>
             </tr>
             <tr>
                 <td> Node Distance </td>
@@ -33,11 +33,10 @@
             </tr>
             <tr>
                 <td> Hold Elements </td>
-                <td><input type="checkbox" id="element_hold" onchange="element_hold()"></td>
+                <td><input type="checkbox" id="element_hold" checked onchange="element_hold()"></td>
                 </td>
             </tr>
         </table>
     </div>
 </div>
-<a href="{{ url_for('index') }}">Back</a>
 {% endblock %}

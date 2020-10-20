@@ -86,6 +86,12 @@ def search():
     #need to fetch customer data from the database
         data_dict=[{"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
                 {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
+                {"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
+                {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
+                {"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
+                {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
+                {"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
+                {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
                 {"id":3,"name":"Kumar","phone":5768797,"Address":"Melbourne"}]
         resulted_dict=[]
         for p in data_dict:
@@ -107,3 +113,16 @@ def jsonData(filePath):
         return str(data)
 
 
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename', None)
+        if filename:
+            file_path = os.path.join(app.root_path,
+                                 endpoint, filename)
+            values['q'] = int(os.stat(file_path).st_mtime)
+            print(values)
+    return url_for(endpoint, **values)
