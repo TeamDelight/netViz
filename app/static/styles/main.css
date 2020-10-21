@@ -265,6 +265,10 @@ tr.table-data:hover{
     background-color: rgba(255, 255, 255, 0.24);
     margin-left: 3%;
     padding: 20px;
+    
+}
+svg g text{
+    color: orange
 }
 
 #sliderTable{
@@ -278,15 +282,10 @@ table#sliderTable th{
 
 line.link {
     fill: none;
-    stroke: #b1e3e6;
-    stroke-width: 2px;
+    stroke: orange;
+    stroke-width: 3px;
 }
 
-line.link :hover {
-    fill: none;
-    stroke: orange;
-    stroke-width: 2px;
-}
 #sliderGroup {
     position: relative;
     float: right;
@@ -297,6 +296,47 @@ line.link :hover {
 .tableTitle {
     text-align: left;
 }
+
+.hovercard h2{
+    color:Black;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 5px;
+    color: blue;
+}
+.hovercard {
+    position: absolute;
+    max-width: 400px;
+    height: auto;
+    padding: 1px;
+    pointer-events: none;
+    font: 12px sans-serif;
+    transition: transform (1.5);
+}
+
+.hover-table{
+    background-color: skyblue;
+    
+}
+
+.hover-title{
+    background-color: skyblue;
+}
+
+
+tr.hover-row:nth-child(odd){
+      background-color: rgb(234,239,247);
+    }
+
+tr.hover-row:nth-child(even) {
+    background-color:white;
+}
+
+td.hover-row{
+    min-width: 150px;
+    max-width: 400px;
+}
+
 
 /*********************************************END Graph page******************************************/
 

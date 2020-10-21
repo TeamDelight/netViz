@@ -1,3 +1,5 @@
+root = eval("(" + root + ')');
+
 var width = window.innerWidth * .8,
     height = window.innerHeight * .8,
     root,
@@ -36,19 +38,13 @@ var force = d3.layout.force()
     .size([width, height])
     .on("tick", tick);
 
-d3.json("/graph_gen_sample.json", function(error, json) {
-    if (error) throw error;
-    root = json;
-    // root.fixed = true;
-    root_element = root.name;
-    update();
-});
-
 
 root.fixed = true;
 root_element = root.name;
 update();
-root.children.fixed = true;
+if (root.children == "children") {
+    root.children.fixed = true;
+}
 
 
 var drag = force.drag()
@@ -174,6 +170,29 @@ function tick() {
         }
         return translate;
     });
+
+    node.on('mouseover', function (d) {
+        hovercard.transition()
+            .duration(100)
+            .style('opacity', 1);
+
+        console.log(d)
+
+        var tip = get_hover_card(d);
+
+        hovercard.html(tip)
+            .style('left', d3.event.pageX + 'px')
+            .style('top', d3.event.pageY + 'px');
+
+    });
+
+    node.on('mouseout', function (d) {
+
+        hovercard.transition()
+            .duration(100)
+            .style('opacity', 0);
+    });
+
 }
 
 function getNodes(root) {
@@ -242,4 +261,22 @@ function element_hold() {
         }
     }
     update();
+}
+
+var hovercard = d3.select('body').append('div')
+    .attr('class', 'hovercard')
+    .style('opacity', 0)
+    .style('width', 400);
+
+
+function get_hover_card(d) {
+    let node_details;
+    node_details = "<table><tr><th  colspan='2'><h2>" + d.name + "</h2></th></tr>";
+    for (key_value in d) {
+        if (!((key_value == "name") || (key_value == "id") || (key_value == "index") || (key_value == "weight") || (key_value == "x") || (key_value == "y") || (key_value == "px") || (key_value == "py") || (key_value == "fixed") || (key_value == "children") || (key_value == "_children"))) {
+            node_details = node_details + "<tr><td>" + key_value + ":</td><td>" + d[key_value] + "</td></tr>";
+        }
+    }
+    node_details = node_details + "</table>";
+    return node_details;
 }

@@ -11,7 +11,7 @@ Date        Changed by              Description
 ************************************************************************************************"""
 
 import os
-from flask import Flask, flash,render_template, redirect, url_for, request, Response
+from flask import Flask, flash, render_template, redirect, url_for, request, Response
 from app import app
 from app.main.forms import LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -26,6 +26,8 @@ Description: main page of netviz application
 Returns:
     Index page for rendering in flask
 """
+
+
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -39,7 +41,9 @@ for the complete session of execution.
 Returns:
     pages that are rendered based on the activity
     """
-@app.route('/login', methods=["GET","POST"])
+
+
+@app.route('/login', methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -64,65 +68,57 @@ Logout the user from the application.
 Returns:
     logout page for rendering in flask
     """
+
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
 
+names_list = ["Sam", "Smile", "Kumar", "Kartik", "Happy",
+              "Joy", "123 address", "15 dovetail", "angel"]
 
-names_list=["Sam","Smile","Kumar","Kartik","Happy","Joy","123 address", "15 dovetail", "angel"]
 
-@app.route('/autocomplete',methods=['GET','POST'])
+@app.route('/autocomplete', methods=['GET', 'POST'])
 def autocomplete():
-    #Have database Query to retrive customer names here
     return Response(json.dumps(names_list), mimetype='application/json')
 
 
-@app.route("/search",methods=['POST'])
+@app.route("/search", methods=['POST'])
 def search():
-    customer_search=request.form['autocomplete']
+    customer_search = request.form['autocomplete']
     if customer_search in names_list:
-    #need to fetch customer data from the database
-        data_dict=[{"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
-                {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
-                {"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
-                {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
-                {"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
-                {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
-                {"id":1,"name":"Kartik","phone":123,"Address":"Victoria"},
-                {"id":2,"name":"Kartik","phone":5768797,"Address":"Melbourne"},
-                {"id":3,"name":"Kumar","phone":5768797,"Address":"Melbourne"}]
-        resulted_dict=[]
+        # need to fetch customer data from the database
+        data_dict = [{"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
+                     {"id": 2, "name": "Kartik", "phone": 5768797,
+                         "Address": "Melbourne"},
+                     {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
+                     {"id": 2, "name": "Kartik", "phone": 5768797,
+                         "Address": "Melbourne"},
+                     {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
+                     {"id": 2, "name": "Kartik", "phone": 5768797,
+                         "Address": "Melbourne"},
+                     {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
+                     {"id": 2, "name": "Kartik", "phone": 5768797,
+                         "Address": "Melbourne"},
+                     {"id": 3, "name": "Kumar", "phone": 5768797, "Address": "Melbourne"}]
+        resulted_dict = []
         for p in data_dict:
             if p['name'] == customer_search:
                 resulted_dict.append(p)
-        return render_template("index.html",resulted_dict=resulted_dict)
+        return render_template("index.html", resulted_dict=resulted_dict)
     else:
         return render_template("index.html", customer_search=customer_search)
 
+
 @app.route("/graph_generation/<customer_id>")
 def graph_generation(customer_id):
-    file_location = os.getcwd().replace("\\","/") + "/graph_gen_sample.json"
-    return render_template("net_graph.html", data = jsonData(file_location))
+    file_location = os.getcwd().replace("\\", "/") + "/graph_gen_sample.json"
+    return render_template("net_graph.html", data=jsonData(file_location))
 
 
 def jsonData(filePath):
     with open(filePath) as graph_data:
         data = json.load(graph_data)
         return str(data)
-
-
-@app.context_processor
-def override_url_for():
-    return dict(url_for=dated_url_for)
-
-def dated_url_for(endpoint, **values):
-    if endpoint == 'static':
-        filename = values.get('filename', None)
-        if filename:
-            file_path = os.path.join(app.root_path,
-                                 endpoint, filename)
-            values['q'] = int(os.stat(file_path).st_mtime)
-            print(values)
-    return url_for(endpoint, **values)

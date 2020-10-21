@@ -28,6 +28,7 @@ var link = svg.selectAll("link"),
 
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
+    .attr("id", "toolstip")
     .style("opacity", 0);
 
 var force = d3.layout.force()
@@ -38,17 +39,18 @@ var force = d3.layout.force()
     .size([width, height])
     .on("tick", tick);
 
-
 root.fixed = true;
 root_element = root.name;
 update();
-root.children.fixed = true;
+if (root.children == "children") {
+    root.children.fixed = true;
+}
 
 
 var drag = force.drag()
-.on("dragstart", dragstart);
+    .on("dragstart", dragstart);
 function dragstart(d) {
-d3.select(this).classed("fixed", d.fixed = true);
+    d3.select(this).classed("fixed", d.fixed = true);
 }
 
 function update() {
@@ -91,9 +93,13 @@ function update() {
         .attr("dy", function (d) { return 40; })
         .attr("dx", function (d) { return -25; })
         .attr("class", "texts")
+        .style("font-size", "1.1em")
+        .style("left", "-25px")
+        .style('fill', "white")
         .text(function (d) {
             return d.name;
-        });
+        })
+        ;
 
     node.exit().remove();
 
@@ -168,6 +174,27 @@ function tick() {
         }
         return translate;
     });
+
+    node.on('mouseover', function (d) {
+        hovercard.transition()
+            .duration(100)
+            .style('opacity', 1);
+
+        var tip = get_hover_card(d);
+
+        hovercard.html(tip)
+            .style('left', d3.event.pageX + 'px')
+            .style('top', d3.event.pageY + 'px');
+
+    });
+
+    node.on('mouseout', function (d) {
+
+        hovercard.transition()
+            .duration(100)
+            .style('opacity', 0);
+    });
+
 }
 
 function getNodes(root) {
@@ -236,4 +263,25 @@ function element_hold() {
         }
     }
     update();
+}
+
+// var div = d3.select("body").append("div")
+//     .attr("class", "tooltip")
+//     .style("opacity", 0);
+
+var hovercard = d3.select('body').append('div')
+    .attr('class', 'hovercard')
+    .style('opacity', 0)
+    .style('width', 400);
+
+function get_hover_card(d) {
+    let node_details;
+    node_details = "<table class = 'hover-table'><tr><th  colspan='2' class='hover-title'><h2>" + d.name + "</h2></th></tr>";
+    for (key_value in d) {
+        if (!((key_value == "name") || (key_value == "id") || (key_value == "index") || (key_value == "weight") || (key_value == "x") || (key_value == "y") || (key_value == "px") || (key_value == "py") || (key_value == "fixed") || (key_value == "children") || (key_value == "_children"))) {
+            node_details = node_details + "<tr class = 'hover-row'><td><b>" + key_value + ":</b></td><td class='hover-row'>" + d[key_value] + "</td></tr>";
+        }
+    }
+    node_details = node_details + "</table>";
+    return node_details;
 }
