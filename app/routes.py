@@ -91,19 +91,20 @@ def get_search_list(param):
     names_list.clear
     #Query to fill the search result to be updated by Shyamala and Koushik.
     #list of strings values of param
+    #db(param) return top 10 results. Karthik
+
+    #conn.execute("select * from table where param top 10")
     names_list = ["Sam", "Smile", "Kumar", "Kartik", "Happy",
               "Joy", "123 address", "15 dovetail", "angel"]
     return names_list
 
 @app.route("/search", methods=['POST'])
 def search():
-    print("search")
     global data_dict, customer_search
     data_dict.clear()
     customer_search = request.form['autocomplete']
     if customer_search in names_list:
         data_dict = get_search_result()
-        print(data_dict)
         return render_template("index.html", resulted_dict=data_dict)
     else:
         return render_template("index.html", customer_search=customer_search)
@@ -111,19 +112,15 @@ def search():
 def get_search_result():
     #Query to fill the search result to be updated by Shyamala and Koushik.
     #list of dictionary taking in values of customer search
-    data_dict = [{"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": 5768797,
-                    "Address": "Melbourne"},
-                {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": 5768797,
-                    "Address": "Melbourne"},
-                {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": 5768797,
-                    "Address": "Melbourne"},
-                {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": 5768797,
-                    "Address": "Melbourne"},
-                {"id": 3, "name": "Kumar", "phone": 5768797, "Address": "Melbourne"}]
+    data_dict = [{"id": 1, "name": "Kartik", "phone": "123|321", "Address": "Victoria"},
+                {"id": 2, "name": "Kartik", "phone": "5768797|855", "Address": "Melbourne|Sydney|Brisbane"},
+                {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
+                {"id": 2, "name": "Kartik", "phone": "5768797", "Address": "Melbourne"},
+                {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
+                {"id": 2, "name": "Kartik", "phone": "5768797", "Address": "Melbourne"},
+                {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
+                {"id": 2, "name": "Kartik", "phone": "5768797", "Address": "Melbourne"},
+                {"id": 3, "name": "Kumar", "phone": "5768797", "Address": "Melbourne"}]
     result_dict = []
     for data in data_dict:
         if data['name'] == customer_search:
@@ -137,7 +134,7 @@ def graph_generation(customer_id):
     file_location = os.getcwd().replace("\\", "/") + "/graph_gen_sample.json"
     return render_template("net_graph.html", data=jsonData(file_location),customer_search = customer_search)
 
-
+added multiline incase if data exists, @Koushik N this to be separated by | (pipe symbol)
 def jsonData(filePath):
     with open(filePath) as graph_data:
         data = json.load(graph_data)

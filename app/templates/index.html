@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+
 {% block content %}
 <h1 id="welcome-user">Hi, {{ current_user.username }}</h1>
 
 <div class="container">
     <form class="autocomplete-form" action="/search" method="POST">
         <input id="autocomplete" type="text" name="autocomplete" class="form-control"
-            placeholder="Search for CustomerID, Customer Name, Address, Phone Number"
+            placeholder="Search for CustomerID, Customer Name, Address, Phone Number, email-address"
             onkeydown="searchAutoComplete(this.value)">
         <button id="search-button" type="submit"><i class="fa fa-search"></i></button>
     </form>
@@ -25,12 +26,23 @@
         <tr class="table-data">
             <td><a href="{{url_for('graph_generation',customer_id = result.id)}}"> {{ result.id }}</a> </td>
             <td> {{ result.name }}</td>
-            <td> {{ result.phone }}</td>
-            <td> {{ result.Address }}</td>
+            <td> {{ new_line(result.phone)}} </td>
+            <td> {{ new_line(result.Address) }}</td>
         </tr>
         {% endfor %}
     </table>
 </div>
 {% endif %} {% elif customer_search|length > 0 %}
-<p id="no_records">No records found for <span id="customer_search">{{customer_search}}</span></p>
+<h3 id="no_records">No records found for <span id="customer_search">{{customer_search}}</span></h3>
 {% endif %} {% endblock %}
+
+{% macro new_line(input_string) %}
+{% if input_string %}
+{% for line in input_string.split( '|' ) %}
+{{ line }}
+<br />
+{% endfor %}
+{% else %}
+{{input_string}}
+{% endif %}
+{% endmacro %}
