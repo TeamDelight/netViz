@@ -3,9 +3,9 @@ root = eval("(" + root + ')');
 var width = window.innerWidth * .8,
     height = window.innerHeight * .8,
     root,
-    gravity = 0.2,
-    charge = -1000,
-    linkStrength = 1,
+    gravity = 0.01,
+    charge = -100,
+    linkStrength = .1,
     count = 0,
     root_element, linkDistance = width * 0.02;
 
@@ -168,15 +168,11 @@ function tick() {
     node.attr("transform", function (d) {
         let translate;
         if (root_element != d.name) {
+            d.x =  Math.max(25, Math.min(width-50, d.x));
+            d.y = Math.max(25, Math.min(height-50, d.y));
             translate = "translate(" + d.x + "," + d.y + ")";
-        } else if (d.y > height || d.x > width) {
-            d.x =  Math.max(25, Math.min(width, d.x));
-            d.y = Math.max(25, Math.min(height - 25, d.y));
-            translate = "translate(" + d.x + "," + d.y + ")";
-
         } else {
             translate = "translate(" + width / 2 + "," + height / 2 + ")";
-
         }
         return translate;
     });
