@@ -2,7 +2,7 @@ function searchAutoComplete() {
         remove_table();
         $.ajax({
                 type: "POST",
-                url: '/autocomplete',
+                url: '/searchlist',
                 data: $('#autocomplete').serialize()
         }).done(function (data) {
                 $('#autocomplete').autocomplete({

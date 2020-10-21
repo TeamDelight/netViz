@@ -3,11 +3,11 @@ root = eval("(" + root + ')');
 var width = window.innerWidth * .8,
     height = window.innerHeight * .8,
     root,
-    gravity = 0.5,
-    charge = -3000,
-    linkStrength = 1,
+    gravity = 0.05,
+    charge = -1000,
+    linkStrength = 2,
     count = 0,
-    root_element, linkDistance = width * 0.05;
+    root_element, linkDistance = width * 0.03;
 
 window.addEventListener("resize", updateWindow);
 
@@ -54,6 +54,7 @@ function dragstart(d) {
 }
 
 function update() {
+
     var nodes = getNodes(root),
         links = d3.layout.tree().links(nodes);
 
