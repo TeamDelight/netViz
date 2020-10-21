@@ -8,7 +8,7 @@
         var root = "{{ data | safe }}"
         var images_path = "{{ url_for('static', filename='graph_imgs') }}"
     </script>
-
+    <h2 id="graph-title"> Network generated for {{customer_search}}</h2>
     <script type="text/javascript" src="{{ url_for('static', filename='graph_gen.js') }}"></script>
     <div id="sliderGroup">
         <table id="sliderTable">

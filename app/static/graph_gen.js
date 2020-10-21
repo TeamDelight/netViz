@@ -3,11 +3,11 @@ root = eval("(" + root + ')');
 var width = window.innerWidth * .8,
     height = window.innerHeight * .8,
     root,
-    gravity = 0.05,
+    gravity = 0.2,
     charge = -1000,
-    linkStrength = 2,
+    linkStrength = 1,
     count = 0,
-    root_element, linkDistance = width * 0.03;
+    root_element, linkDistance = width * 0.02;
 
 window.addEventListener("resize", updateWindow);
 
@@ -16,6 +16,9 @@ function updateWindow() {
     height = window.innerHeight;
     svg.attr("width", width * .8).attr("height", height * .8);
 }
+
+var fill = d3.scale.category20();
+
 d3.select(window).on('resize', updateWindow);
 
 var svg = d3.select("body").append("svg")
@@ -37,7 +40,8 @@ var force = d3.layout.force()
     .gravity(gravity)
     .linkStrength(linkStrength)
     .size([width, height])
-    .on("tick", tick);
+    .on("tick", tick)
+    .size([width, height]);
 
 root.fixed = true;
 root_element = root.name;
@@ -79,6 +83,7 @@ function update() {
                 click(d);
             }
         })
+        .style("fill", function (d) { return fill(d.group); })
         .call(force.drag);
 
     nodeEnter.append('image')
@@ -165,7 +170,7 @@ function tick() {
         if (root_element != d.name) {
             translate = "translate(" + d.x + "," + d.y + ")";
         } else if (d.y > height || d.x > width) {
-            d.x = Math.max(25, Math.min(width, d.x));
+            d.x =  Math.max(25, Math.min(width, d.x));
             d.y = Math.max(25, Math.min(height - 25, d.y));
             translate = "translate(" + d.x + "," + d.y + ")";
 

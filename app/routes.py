@@ -135,7 +135,7 @@ def graph_generation(customer_id):
     #Query to get the json for network generation to be provided by Shyamala and Koushik.
     #json values for the given customer id
     file_location = os.getcwd().replace("\\", "/") + "/graph_gen_sample.json"
-    return render_template("net_graph.html", data=jsonData(file_location))
+    return render_template("net_graph.html", data=jsonData(file_location),customer_search = customer_search)
 
 
 def jsonData(filePath):
