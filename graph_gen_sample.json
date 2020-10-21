@@ -1,6 +1,10 @@
 {
     "name": "Customer",
+    "Customer Name": "Kartik",
     "data": "01212101",
+    "dob": "12-11-1989",
+    "city": "Melbourne",
+    "Country": "Australia",
     "children": [{
             "name": "Account",
             "data": "1010101010",
@@ -46,23 +50,7 @@
             }, {
                 "name": "transaction3"
             }, {
-                "name": "transaction4",
-                "children": [{
-                    "name": "transaction1",
-                    "children": [{
-                        "name": "transaction1"
-                    }, {
-                        "name": "transaction2"
-                    }, {
-                        "name": "transaction3"
-                    }, {
-                        "name": "transaction4"
-                    }]
-                }, {
-                    "name": "transaction2"
-                }, {
-                    "name": "transaction3"
-                }]
+                "name": "transaction4"
             }]
         }, {
             "name": "address",
