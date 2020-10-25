@@ -11,13 +11,14 @@ Date        Changed by              Description
 ************************************************************************************************"""
 
 import os
-from flask import Flask, flash, render_template, redirect, url_for, request, Response, jsonify
+from flask import Flask, flash, render_template, redirect, url_for, make_response, request, Response, jsonify
 from app import app
 from app.main.forms import LoginForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models.models import User
 from werkzeug.urls import url_parse
 import json
+import re
 
 
 """Initial login page for the netviz application
@@ -75,28 +76,35 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
 names_list = []
-data_dict =[]
+data_dict = []
 customer_search = ''
+
 
 @app.route('/searchlist', methods=['GET', 'POST'])
 def searchlist():
     search_value = request.form.getlist('autocomplete')[0]
-    search_list = get_search_list(search_value)
+    search_list_response = get_search_list(search_value).json[0]
+    search_list = search_list_response.split(":")[1]
+    search_list = re.sub("[\[\]']", "", search_list)
+    search_list = search_list.split(",")
     return Response(json.dumps(search_list), mimetype='application/json')
 
-@app.route('/getsearchresult/<param>',methods=['GET'])
-def get_search_list(param):
+
+@app.route('/getsearchresult/<param>', methods=['GET'])
+def get_search_list(param=None):
     global names_list
     names_list.clear
-    #Query to fill the search result to be updated by Shyamala and Koushik.
-    #list of strings values of param
-    #db(param) return top 10 results. Karthik
+    # Query to fill the search result to be updated by Shyamala and Koushik.
+    # list of strings values of param
+    # db(param) return top 10 results. Karthik
 
     #conn.execute("select * from table where param top 10")
     names_list = ["Sam", "Smile", "Kumar", "Kartik", "Happy",
-              "Joy", "123 address", "15 dovetail", "angel"]
-    return names_list
+                  "Joy", "123 address", "15 dovetail", "angel"]
+    return make_response(jsonify("names_list:" + str(names_list), 200))
+
 
 @app.route("/search", methods=['POST'])
 def search():
@@ -109,32 +117,38 @@ def search():
     else:
         return render_template("index.html", customer_search=customer_search)
 
+
 def get_search_result():
-    #Query to fill the search result to be updated by Shyamala and Koushik.
-    #list of dictionary taking in values of customer search
+    # Query to fill the search result to be updated by Shyamala and Koushik.
+    # list of dictionary taking in values of customer search
     data_dict = [{"id": 1, "name": "Kartik", "phone": "123|321", "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": "5768797|855", "Address": "Melbourne|Sydney|Brisbane"},
-                {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": "5768797", "Address": "Melbourne"},
-                {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": "5768797", "Address": "Melbourne"},
-                {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": "5768797", "Address": "Melbourne"},
-                {"id": 3, "name": "Kumar", "phone": "5768797", "Address": "Melbourne"}]
+                 {"id": 2, "name": "Kartik", "phone": "5768797|855",
+                     "Address": "Melbourne|Sydney|Brisbane"},
+                 {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
+                 {"id": 2, "name": "Kartik", "phone": "5768797",
+                     "Address": "Melbourne"},
+                 {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
+                 {"id": 2, "name": "Kartik", "phone": "5768797",
+                     "Address": "Melbourne"},
+                 {"id": 1, "name": "Kartik", "phone": "123", "Address": "Victoria"},
+                 {"id": 2, "name": "Kartik", "phone": "5768797",
+                     "Address": "Melbourne"},
+                 {"id": 3, "name": "Kumar", "phone": "5768797", "Address": "Melbourne"}]
     result_dict = []
     for data in data_dict:
         if data['name'] == customer_search:
             result_dict.append(data)
     return result_dict
 
+
 @app.route("/graph_generation/<customer_id>")
 def graph_generation(customer_id):
-    #Query to get the json for network generation to be provided by Shyamala and Koushik.
-    #json values for the given customer id
+    # Query to get the json for network generation to be provided by Shyamala and Koushik.
+    # json values for the given customer id
     file_location = os.getcwd().replace("\\", "/") + "/graph_gen_sample.json"
-    return render_template("net_graph.html", data=jsonData(file_location),customer_search = customer_search)
+    return render_template("net_graph.html", data=jsonData(file_location), customer_search=customer_search)
 
-added multiline incase if data exists, @Koushik N this to be separated by | (pipe symbol)
+
 def jsonData(filePath):
     with open(filePath) as graph_data:
         data = json.load(graph_data)
