@@ -108,19 +108,11 @@ def network_json_gen(cus_id):
     
     return json.dumps(network_json1)
 
-def path_change():
-    prev_path = os.getcwd()
-    os.chdir(os.path.dirname(os.getcwd()))
-    os.chdir(os.path.dirname(os.getcwd()))
-    path = os.getcwd()
-    os.chdir(prev_path)
-    
-    return path
 
 def write_file_path(cus_id):
-    path = path_change() + "\graph_gen_sample.json"
-    print(path)
+    path = "graph_gen_sample.json"    
     json_file = network_json_gen(cus_id)
     
     with open(path, 'w') as f:
-        f.write(json_file)    
+        f.write(json_file)
+        

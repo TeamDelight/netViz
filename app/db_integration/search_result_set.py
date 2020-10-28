@@ -46,7 +46,8 @@ def search_result_data_fetch3(search_string):
             "id" : search_result_list[0], 
             "name" : search_result_list[1], 
             "phone" : search_result_list[3], 
-            "Address" : search_result_list[2]            
+            "address" : search_result_list[2],
+            "account" : search_result_list[4]            
         }
         
         search_result_dict.append(temp)
