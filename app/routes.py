@@ -18,6 +18,8 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models.models import User
 from werkzeug.urls import url_parse
 import json
+from app.db_integration.search_result_set import search_suggestion, search_result_data_fetch3
+from app.db_integration.network_generation import write_file_path
 
 
 """Initial login page for the netviz application
@@ -73,6 +75,7 @@ Returns:
 @app.route('/logout')
 def logout():
     logout_user()
+    
     return redirect(url_for('index'))
 
 names_list = []
@@ -81,64 +84,49 @@ customer_search = ''
 
 @app.route('/searchlist', methods=['GET', 'POST'])
 def searchlist():
-    search_value = request.form.getlist('autocomplete')[0]
+    search_value = request.form.getlist('autocomplete')[0]    
     search_list = get_search_list(search_value)
+        
     return Response(json.dumps(search_list), mimetype='application/json')
 
 @app.route('/getsearchresult/<param>',methods=['GET'])
 def get_search_list(param):
-    global names_list
-    names_list.clear
-    #Query to fill the search result to be updated by Shyamala and Koushik.
-    #list of strings values of param
-    names_list = ["Sam", "Smile", "Kumar", "Kartik", "Happy",
-              "Joy", "123 address", "15 dovetail", "angel"]
+    names_list = []
+    names_list.clear   
+    names_list = search_suggestion(param)
+   
     return names_list
 
-@app.route("/search", methods=['POST'])
+@app.route("/search", methods=['GET', 'POST'])
 def search():
-    print("search")
-    global data_dict, customer_search
+    print("search")   
+    data_dict = [] 
     data_dict.clear()
     customer_search = request.form['autocomplete']
-    if customer_search in names_list:
-        data_dict = get_search_result()
-        print(data_dict)
+    data_dict = get_search_result(customer_search)
+    print(data_dict)
+    if data_dict != []:
         return render_template("index.html", resulted_dict=data_dict)
     else:
         return render_template("index.html", customer_search=customer_search)
+   
 
-def get_search_result():
-    #Query to fill the search result to be updated by Shyamala and Koushik.
-    #list of dictionary taking in values of customer search
-    data_dict = [{"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": 5768797,
-                    "Address": "Melbourne"},
-                {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": 5768797,
-                    "Address": "Melbourne"},
-                {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": 5768797,
-                    "Address": "Melbourne"},
-                {"id": 1, "name": "Kartik", "phone": 123, "Address": "Victoria"},
-                {"id": 2, "name": "Kartik", "phone": 5768797,
-                    "Address": "Melbourne"},
-                {"id": 3, "name": "Kumar", "phone": 5768797, "Address": "Melbourne"}]
-    result_dict = []
-    for data in data_dict:
-        if data['name'] == customer_search:
-            result_dict.append(data)
+@app.route('/getsearchresult/<param>',methods=['GET'])
+def get_search_result(param):
+    result_dict = search_result_data_fetch3(param)
+    
     return result_dict
 
 @app.route("/graph_generation/<customer_id>")
-def graph_generation(customer_id):
-    #Query to get the json for network generation to be provided by Shyamala and Koushik.
-    #json values for the given customer id
+def graph_generation(customer_id):    
+    write_file_path(customer_id)
     file_location = os.getcwd().replace("\\", "/") + "/graph_gen_sample.json"
+    
     return render_template("net_graph.html", data=jsonData(file_location),customer_search = customer_search)
 
 
 def jsonData(filePath):
     with open(filePath) as graph_data:
         data = json.load(graph_data)
+        
         return str(data)

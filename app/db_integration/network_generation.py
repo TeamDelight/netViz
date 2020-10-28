@@ -1,6 +1,5 @@
-import sys
-sys.path.append("C://Users\hExaG0n//My Documents//LiClipse Workspace//")
-from netViz_Dev.database.data_fetch_customer import data_fetch
+import os
+from database.data_fetch_customer import data_fetch
 import json
 
 
@@ -9,6 +8,7 @@ def network_json_gen(cus_id):
     network_json = {}
     string = list(network_list[0])
     string[15] = str(string[15])
+    
     
     #compiling all records in a list
     for row in network_list:
@@ -29,7 +29,7 @@ def network_json_gen(cus_id):
             string[14] += "|" + str(row[14])         
         if string[15] != str(row[15]):
             string[15] += "|" + str(row[15])         
-        if string[16] != row[16]:
+        if string[16] != (row[16]):
             string[16] += "|" + str(row[16])
     
     #separating customer type
@@ -75,7 +75,7 @@ def network_json_gen(cus_id):
         "children" : ""
         }    
     
-    transaction_list1 = [{"reference_num": row} for row in string[13].split("|")]
+    transaction_list1 = [{"name": row} for row in string[13].split("|")]
     transaction_list2 = [{"transaction_type": row} for row in string[14].split("|")]
     transaction_list3 = [{"transaction_amount": row} for row in string[15].split("|")]
     transaction_list4 = [{"transaction_date": row} for row in string[16].split("|")]    
@@ -94,7 +94,7 @@ def network_json_gen(cus_id):
         "children" : ""
         }    
     
-    address_list1 = [{"address_type": row} for row in string[6].split("|")]
+    address_list1 = [{"name": row} for row in string[6].split("|")]
     address_list2 = [{"address_desc": row} for row in string[5].split("|")]
     
     for i in range(0, len(address_list1)):
@@ -107,3 +107,20 @@ def network_json_gen(cus_id):
     network_json1.update(network_json2)
     
     return json.dumps(network_json1)
+
+def path_change():
+    prev_path = os.getcwd()
+    os.chdir(os.path.dirname(os.getcwd()))
+    os.chdir(os.path.dirname(os.getcwd()))
+    path = os.getcwd()
+    os.chdir(prev_path)
+    
+    return path
+
+def write_file_path(cus_id):
+    path = path_change() + "\graph_gen_sample.json"
+    print(path)
+    json_file = network_json_gen(cus_id)
+    
+    with open(path, 'w') as f:
+        f.write(json_file)    

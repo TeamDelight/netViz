@@ -1,11 +1,9 @@
-import sys
-sys.path.append("C://Users\hExaG0n//My Documents//LiClipse Workspace//")
-from netViz_Dev.database.data_fetch_customer import search_fetch, suggestion_data_fetch, suggestion_cusid_fetch
-import time
+from database.data_fetch_customer import search_fetch, suggestion_data_fetch, suggestion_cusid_fetch
+import json
 
 
 def search_suggestion(search_string):
-    suggestion_list = [row[1] for row in suggestion_data_fetch(search_string)]
+    suggestion_list = [str(row[1]) for row in suggestion_data_fetch(search_string)]
     
     return suggestion_list
 
@@ -15,7 +13,7 @@ def search_result_data_fetch1(search_string):
     cus_id_list = [row[0] for row in search_result_list]
     cus_id_list = list(set(cus_id_list))
     cus_id_list.sort()
-        
+    
     return cus_id_list
 
 
@@ -48,10 +46,9 @@ def search_result_data_fetch3(search_string):
             "id" : search_result_list[0], 
             "name" : search_result_list[1], 
             "phone" : search_result_list[3], 
-            "address" : search_result_list[2], 
-            "account" : search_result_list[4]
+            "Address" : search_result_list[2]            
         }
         
         search_result_dict.append(temp)
-                
+        
     return search_result_dict

@@ -19,6 +19,7 @@ with con:
         );
     """)
 
+
 with con:
     con.execute("""
         create table CUSTOMER_ADDRESS (
@@ -35,6 +36,7 @@ with con:
         );
     """)
 
+
 with con:
     con.execute("""
         create table CUSTOMER_CONTACT (
@@ -46,6 +48,7 @@ with con:
             CLOSE_DT DATETIME DEFAULT '9999-12-31 23:59:59.999'
         );
     """)
+
 
 with con:
     con.execute("""
@@ -60,6 +63,7 @@ with con:
         );
     """)
 
+
 with con:
     con.execute("""
         create table ACCOUNT_DETAIL (
@@ -71,6 +75,7 @@ with con:
         );
     """)
 
+
 with con:
     con.execute("""
         create table ACCOUNT_BALANCE (
@@ -81,6 +86,7 @@ with con:
         );
     """)
 
+
 with con:
     con.execute("""
         create table CUS_ACC_RLTSHP (
@@ -90,6 +96,7 @@ with con:
             CLOSE_DT DATETIME DEFAULT '9999-12-31 23:59:59.999'
         );
     """)
+
 
 with con:
     con.execute("""
@@ -102,6 +109,7 @@ with con:
             PRIMARY KEY(TRANSACTION_REFERENCE, ACCOUNT_ID)
         );
     """)
+
 
 with con:
     con.execute("""        
@@ -202,7 +210,8 @@ with con:
             td.account_id,
             td.transaction_reference desc;
         """)
-    
+
+ 
 with con:
     con.execute("""
     create view SEARCH_RESULT_V
@@ -251,22 +260,29 @@ with con:
     order by
         cd.cus_id;
     """)
-    
+
+
 with con:
-    con.connect("""
+    con.execute("""
     create view search_suggestion_v
     as
     select
         cus_id,
-        cus_name as cus_details
+        cus_details
     from
     (
+    select 
+        cd.cus_id, 
+        cd.cus_id as cus_details
+    from 
+        customer_detail cd
+    union all
     select
         cd.cus_id,
         case
             when cd.cus_middle_name <> ""  then cd.cus_first_name || ' ' || cd.cus_middle_name || ' ' || cd.cus_last_name
             else cd.cus_first_name || ' ' || cd.cus_last_name
-        end as cus_name
+        end as cus_details  
     from
         customer_detail cd
     union all
@@ -289,7 +305,7 @@ with con:
                 then ca.address_line_1 || ',' || ca.address_line_2 || ',' || ca.city || ',' || ca.state || ',' || ca.zip_code
             when ca.address_line_1 <> "" and ca.address_line_2 <> "" and ca.address_line_3 <> ""
                 then ca.address_line_1 || ',' || ca.address_line_2 || ',' || ca.address_line_3 || ',' || ca.city || ',' || ca.state || ',' || ca.zip_code            
-        end as cus_address
+        end as cus_details
     from
         customer_address ca
     union all
@@ -299,7 +315,7 @@ with con:
             when cc.contact_method = 'PHN' and cc.contact_number <> "" then printf("%d",cc.contact_number)
             when cc.contact_method = 'PHN' and cc.contact_number = "" then cc.email_id
             when cc.contact_method = 'MBL' then printf("%d",cc.contact_number)        
-        end as cus_contact
+        end as cus_details
     from
         customer_contact cc)
     order by
