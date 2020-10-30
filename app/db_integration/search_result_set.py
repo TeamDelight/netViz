@@ -53,3 +53,9 @@ def search_result_data_fetch3(search_string):
         search_result_dict.append(temp)
         
     return search_result_dict
+
+def cus_name_fetch(cus_id):
+    search_result_fetch = search_fetch(cus_id)
+    name = search_result_fetch[0][1]
+    
+    return name

@@ -205,12 +205,12 @@ div.ui-helper-hidden-accessible {
 }
 
 #table_caption{
-    color:orange;
+    color:white;
     text-align:right;
 }
 
 table, td, th {
-    border: 1px solid skyblue;
+    border: 1px solid dimGrey;
   }
 
   td, th {
@@ -220,13 +220,13 @@ table, td, th {
 
   table {
     border-collapse: collapse;
-    width: 60%;
-    color: black;
+    width: 70%;
+    color: white;
   }
 
   th {
     height: 50px;
-    background-color:rgb(255, 151, 53);
+    background-color:lightsteelblue;
     text-align:center;
     color: black;
   }
@@ -238,18 +238,18 @@ td{
 }
 
 tr:nth-child(odd){
-      background-color: rgb(248,215,205);
+      background-color: rgb(255, 255, 255, 0.03);
     }
 
 tr:nth-child(even) {
-    background-color: rgb(252,232,232);
+    background-color: rgb(255, 255, 255, 0.03);
 }
 
 
 tr.table-data:hover{
-    background-color: rgb(250, 184, 61);
+    background-color: black;
     transform: scale(1.005);
-    transition: transform .2s;
+    transition: transform .1s;
     cursor: pointer;
 }
 
@@ -280,7 +280,7 @@ tr.table-data:hover{
 
 #graph {
     margin-top: 3%;
-    background-color: rgba(255, 255, 255, 0.24);
+    background-color: rgba(255, 255, 255, 0.03);
     margin-left: 3%;
     padding: 20px;
     
@@ -307,7 +307,7 @@ line.link {
 #sliderGroup {
     position: relative;
     float: right;
-    background-color: aqua;
+    background-color: rgb(255, 255, 255, 0);
     margin-right: 2%;
 }
 
@@ -316,11 +316,9 @@ line.link {
 }
 
 .hovercard h2{
-    color:Black;
-    font-weight: bold;
-    font-size: 24px;
-    padding: 5px;
-    color: blue;
+    color:blue;    
+    font-size: 18px;
+    padding: 3px;    
 }
 .hovercard {
     position: absolute;
@@ -333,26 +331,28 @@ line.link {
 }
 
 .hover-table{
-    background-color: skyblue;
-    
+    background-color: rgb(255, 255, 255, 0.8);
 }
 
 .hover-title{
-    background-color: skyblue;
+    background-color: rgb(255, 255, 255, 0.1);
 }
 
 
 tr.hover-row:nth-child(odd){
-      background-color: rgb(234,239,247);
-    }
+    background-color: rgb(255, 255, 255, 0.1);
+    color:black;
+}
 
 tr.hover-row:nth-child(even) {
-    background-color:white;
+    background-color:rgb(255, 255, 255, 0.1);
+    color:black;
 }
 
 td.hover-row{
     min-width: 150px;
     max-width: 400px;
+    color:black;
 }
 
 #graph-title{

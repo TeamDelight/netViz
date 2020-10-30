@@ -19,7 +19,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models.models import User
 from werkzeug.urls import url_parse
 import json
-from app.db_integration.search_result_set import search_suggestion, search_result_data_fetch3
+from app.db_integration.search_result_set import search_suggestion, search_result_data_fetch3, cus_name_fetch
 from app.db_integration.network_generation import write_file_path
 import re
 
@@ -152,6 +152,7 @@ def get_search_result(param):
 
 @app.route("/graph_generation/<customer_id>")
 def graph_generation(customer_id):    
+    customer_search = cus_name_fetch(customer_id)
     write_file_path(customer_id)
     file_location = os.getcwd().replace("\\", "/") + "/graph_gen_sample.json"
     

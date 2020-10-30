@@ -6,14 +6,14 @@
 <div class="container">
     <form class="autocomplete-form" action="/search" method="POST">
         <input id="autocomplete" type="text" name="autocomplete" class="form-control"
-            placeholder="Search for CustomerID, Customer Name, Address, Phone Number, email-address"
+            placeholder="Search for CustomerID, Customer Name, Address, Phone Number, A/C number"
             onkeydown="searchAutoComplete(this.value)">
         <button id="search-button" type="submit"><i class="fa fa-search"></i></button>
     </form>
 </div>
 
 {% if resulted_dict %} {% if resulted_dict|length > 0 %}
-<div>
+<div>   
     <table id=search_result_table>
         <caption id="table_caption">Search Results fetched for <span>{{resulted_dict[0].name}}</span></caption>
         <tr>

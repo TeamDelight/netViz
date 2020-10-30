@@ -37,15 +37,23 @@ def network_json_gen(cus_id):
         cus_type = "Individual"
     elif string[3] == "ORG":
         cus_type = "Organization"
-        
+    
+    #expanding gender
+    if string[2] == "F":
+        gender = "Female"
+    elif string[2] == "M":
+        gender = "Male"
+    
+    #date of birth
+    dob = string[4][0:10]
+    
     #json config
     network_json1 = {
         "name" : "Customer",
         "Customer Name" : string[1],  
-        "Gender" : string[2],
+        "Gender" : gender,
         "Customer Type" : cus_type,      
-        "dob" : string[4],
-        "city" : "who cares?",
+        "dob/estb" : dob,        
         "Country": "Australia"        
         }
     
@@ -67,7 +75,8 @@ def network_json_gen(cus_id):
         account_list1[i].update(account_list2[i]) 
     
     network_account_json["children"] = account_list1
-    
+ 
+ 
     #transaction data
     network_transaction_json = {
         "name" : "transaction",
@@ -87,6 +96,7 @@ def network_json_gen(cus_id):
     
     network_transaction_json["children"] = transaction_list1
    
+   
     #address
     network_address_json = {
         "name" : "address",
@@ -102,11 +112,13 @@ def network_json_gen(cus_id):
     
     network_address_json["children"] = address_list1
     
+    
     network_json2_list = [network_account_json, network_transaction_json, network_address_json]
     network_json2["children"] = network_json2_list    
     network_json1.update(network_json2)
     
     return json.dumps(network_json1)
+
 
 
 def write_file_path(cus_id):
