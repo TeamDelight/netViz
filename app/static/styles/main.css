@@ -144,6 +144,12 @@ h1 {
     font-size: 4em;
 }
 
+#tooltip-search-bar{
+    color: rgba(135, 207, 235, 0.5);
+    margin: auto;
+    width: 50%;
+}
+
 /*Search box*/
 #autocomplete{
     margin-left: 30%;
@@ -245,6 +251,9 @@ tr:nth-child(even) {
     background-color: rgb(255, 255, 255, 0.03);
 }
 
+tr.table-data{
+    font-size: 1.2em;
+}
 
 tr.table-data:hover{
     background-color: black;
