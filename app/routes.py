@@ -28,6 +28,7 @@ import ast
 Defining global variabels
 """
 customer_search = ''
+base_page = "index.html"
 
 
 """Initial login page for the netviz application
@@ -36,12 +37,13 @@ Description: main page of netviz application
 Returns:
     Index page for rendering in flask
 """
+
+
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    return render_template("index.html")
-
+    return render_template(base_page)
 
 
 """
@@ -51,8 +53,11 @@ for the complete session of execution.
 Returns:
 pages that are rendered based on the activity
 """
+
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    return redirect(url_for('index'))
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     login_form = LoginForm()
@@ -76,10 +81,13 @@ Logout the user from the application.
 Returns:
     logout page for rendering in flask
 """
+
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
 
 """
 Search list
@@ -87,6 +95,8 @@ This method is used for getting the search suggestions for the user by fetching 
 Returns:
     renders page for showing the suggestions.
 """
+
+
 @app.route('/searchlist', methods=['GET', 'POST'])
 def searchlist():
     global customer_search
@@ -105,6 +115,7 @@ def searchlist():
         """
         pass
 
+
 """
 API end point for search suggestions
 This method loads the suggestions for API where first 15 records are found.
@@ -115,6 +126,8 @@ values to be searched in the UI
 Returns:
     returns json for data from the backend for search parameter passed.
 """
+
+
 @app.route('/api/getsearchresult/<param>', methods=['GET'])
 def get_search_list(param):
     names_list = []
@@ -125,13 +138,14 @@ def get_search_list(param):
         return make_response(jsonify("error:No records found making the search")), 404
 
 
-
 """
 Search list
 This method is used for getting the table populated for the given search parameter.
 Returns:
     renders page for showing the result table.
 """
+
+
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     result_set = []
@@ -144,9 +158,9 @@ def search():
         result_set = result_set[0].json[10:]
         result_set = ast.literal_eval(result_set)
         if result_set != []:
-            return render_template("index.html", resulted_dict=result_set, customer_search=customer_search)
+            return render_template(base_page, resulted_dict=result_set, customer_search=customer_search)
         else:
-            return render_template("index.html", customer_search=customer_search)
+            return render_template(base_page, customer_search=customer_search)
     else:
         """
         error message or page to be diplayed here
@@ -164,6 +178,8 @@ values to be searched in the UI
 Returns:
     returns json for data from the backend for search parameter passed.
 """
+
+
 @app.route('/api/getsearchresultset/<param>', methods=['GET'])
 def get_search_result(param):
     result_set = search_result_data_fetch3(param)
@@ -182,6 +198,8 @@ Customer ID as parameter for generating the graph data
 Returns:
     renders page for graph generations
 """
+
+
 @app.route("/graph_generation/<customer_id>")
 def graph_generation(customer_id):
     customer_search = cus_name_fetch(customer_id)
@@ -198,6 +216,8 @@ Customer ID as parameter for generating the graph data
 Returns:
     returns the json data of graphs generation
 """
+
+
 @app.route("/api/graph_generation/<customer_id>")
 def get_graph_data(customer_id):
     json_data_net = str(network_json_gen(customer_id)).replace('"', "'")
