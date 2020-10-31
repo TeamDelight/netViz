@@ -20,7 +20,7 @@ from app.models.models import User
 from werkzeug.urls import url_parse
 import json
 from app.db_integration.search_result_set import search_suggestion, search_result_data_fetch3, cus_name_fetch
-from app.db_integration.network_generation import network_json_gen,write_file_path
+from app.db_integration.network_generation import network_json_gen
 import re
 import ast
 
@@ -88,7 +88,6 @@ customer_search = ''
 
 @app.route('/searchlist', methods=['GET', 'POST'])
 def searchlist():
-    print(request.method)
     global customer_search
     search_value = request.args.get('autocomplete')
     customer_search = search_value
@@ -124,7 +123,6 @@ def search():
     customer_search = request.form['autocomplete']
     data_dict = get_search_result(customer_search)
 
-    print(data_dict)
     if data_dict[0].status_code == 200:
         data_dict = data_dict[0].json[10:]
         data_dict = ast.literal_eval(data_dict)
@@ -141,7 +139,6 @@ def search():
 def get_search_result(param):
     result_dict = search_result_data_fetch3(param)
     if result_dict:
-        print(result_dict)
         result_dict = json.dumps(result_dict)
         # return make_response(result_dict, 200)
         return make_response(jsonify("dict_list:" + str(result_dict))), 200
@@ -152,12 +149,8 @@ def get_search_result(param):
 @app.route("/graph_generation/<customer_id>")
 def graph_generation(customer_id):
     customer_search = cus_name_fetch(customer_id)
-    print(network_json_gen(customer_id))
-
-    file_location = os.getcwd().replace("\\", "/") + "/graph_gen_sample.json"
-    write_file_path
-    print(jsonData(file_location))
-    return render_template("net_graph.html", data=jsonData(file_location), customer_search=customer_search)
+    json_data_net = str(network_json_gen(customer_id)).replace('"', "'")
+    return render_template("net_graph.html", data=json_data_net, customer_search=customer_search)
 
 
 def jsonData(filePath):
@@ -178,5 +171,4 @@ def dated_url_for(endpoint, **values):
             file_path = os.path.join(app.root_path,
                                      endpoint, filename)
             values['q'] = int(os.stat(file_path).st_mtime)
-            print(values)
     return url_for(endpoint, **values)
