@@ -124,6 +124,7 @@ def network_json_gen(cus_id):
 def write_file_path(cus_id):
     path = "graph_gen_sample.json"    
     json_file = network_json_gen(cus_id)
+    print(json_file)
     
     with open(path, 'w') as f:
         f.write(json_file)
