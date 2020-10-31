@@ -4,7 +4,7 @@
 <h1 id="welcome-user">Hi, {{ current_user.username }}</h1>
 
 <div class="container">
-    <form class="autocomplete-form" action="/search" method="POST">       
+    <form class="autocomplete-form" action="/search" method="POST">
         <input id="autocomplete" type="text" name="autocomplete" class="form-control"
             placeholder="Search for CustomerID, Customer Name, Address, Phone Number, A/C number"
             onkeyup="searchAutoComplete(this.value)">
@@ -14,7 +14,7 @@
 </div>
 
 {% if resulted_dict %} {% if resulted_dict|length > 0 %}
-<div>   
+<div>
     <table class="search_table" id=search_result_table>
         <caption id="table_caption">Search Results fetched for <span>{{customer_search}}</span></caption>
         <tr>
