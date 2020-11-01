@@ -1,0 +1,87 @@
+{
+  "name": "Customer",
+  "Customer Name": "Raquel Dale Hachey",
+  "Customer ID": 1001,
+  "Gender": "Female",
+  "Customer Type": "Individual",
+  "DOB": "1986-09-14",
+  "Country": "Australia",
+  "children": [
+    {
+      "name": "Account",
+      "desc": "List of all accounts linked. Click for further details.",
+      "children": [
+        {
+          "name": "AC00001",
+          "account_type": "Savings Account",
+          "children": [
+            {
+              "name": "TRN00007",
+              "transaction_type": "CREDIT",
+              "transaction_date": "2018-07-27",
+              "transaction_amount": 17.21
+            },
+            {
+              "name": "TRN00006",
+              "transaction_type": "DEBIT",
+              "transaction_date": "2018-07-26",
+              "transaction_amount": 16.21
+            },
+            {
+              "name": "TRN00005",
+              "transaction_type": "CREDIT",
+              "transaction_date": "2018-07-25",
+              "transaction_amount": 15.21
+            },
+            {
+              "name": "TRN00004",
+              "transaction_type": "CREDIT",
+              "transaction_date": "2018-07-24",
+              "transaction_amount": 14.21
+            },
+            {
+              "name": "TRN00003",
+              "transaction_type": "DEBIT",
+              "transaction_date": "2018-07-23",
+              "transaction_amount": 13.21
+            }
+          ]
+        },
+        {
+          "name": "AC00006",
+          "account_type": "Current Account",
+          "children": [
+            {
+              "name": "TRN00012",
+              "transaction_type": "DEBIT",
+              "transaction_date": "2018-08-01",
+              "transaction_amount": 22.21
+            }
+          ]
+        },
+        {
+          "name": "AC00007",
+          "account_type": "Savings Account",
+          "children": [
+            {
+              "name": "TRN00013",
+              "transaction_type": "CREDIT",
+              "transaction_date": "2018-08-02",
+              "transaction_amount": 23.21
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "address",
+      "desc": "List of all address linked. Click for further details.",
+      "children": [
+        {
+          "name": "RES",
+          "Detail_Address": "26 Glendonbrook Road,Reedy Creek,Queensland,4357"
+        }
+      ]
+    }
+  ]
+}

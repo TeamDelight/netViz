@@ -57,7 +57,6 @@ pages that are rendered based on the activity
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    return redirect(url_for('index'))
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     login_form = LoginForm()

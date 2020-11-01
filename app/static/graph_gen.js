@@ -88,7 +88,7 @@ function update() {
 
     nodeEnter.append('image')
         .attr('xlink:href', function (d) {
-            return images_path + "\\" + get_name(d.name) + ".png";
+            return images_path + "\\" + get_name(d) + ".png";
         })
         .attr("x", function (d) { return -25; })
         .attr("y", function (d) { return -25; })
@@ -168,8 +168,8 @@ function tick() {
     node.attr("transform", function (d) {
         let translate;
         if (root_element != d.name) {
-            d.x =  Math.max(25, Math.min(width-50, d.x));
-            d.y = Math.max(25, Math.min(height-50, d.y));
+            d.x = Math.max(25, Math.min(width - 50, d.x));
+            d.y = Math.max(25, Math.min(height - 50, d.y));
             translate = "translate(" + d.x + "," + d.y + ")";
         } else {
             translate = "translate(" + width / 2 + "," + height / 2 + ")";
@@ -213,8 +213,21 @@ function getNodes(root) {
     return nodes;
 }
 
-function get_name(name) {
+function get_name(data) {
+    let name = data.name
     let isNum = false
+
+    if (name == "Customer") {
+        if (data.Gender == "Male") {
+            return "customer_b";
+        } else if (data.Gender == "Female") {
+            return "customer_g";
+        } else if (data.Gender == "N/A") {
+            return "customer_o"
+        } else {
+            return "customer"
+        }
+    }
 
     let lastChar;
     while (!isNum) {

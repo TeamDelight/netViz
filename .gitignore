@@ -141,6 +141,6 @@ test1 copy.txt
 test1.txt
 netviz.code-workspace
 python_doc_string.mustache
-*.json
-*.txt
-.idea
+actual.json
+graph_list.txt
+.idea/*
