@@ -103,7 +103,12 @@ function update() {
         .style("left", "-25px")
         .style('fill', "white")
         .text(function (d) {
-            return d.name;
+            if (d.name == "email"){
+                return d.name
+            }
+            name = d.name.charAt(0).toUpperCase() + d.name.slice(1).toLowerCase();
+            name = name.replace("_"," ")
+            return name;
         })
         ;
 
