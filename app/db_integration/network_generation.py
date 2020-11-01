@@ -133,7 +133,6 @@ class NetworkGeneration:
 
     def append_lists(self):
         self.get_account_trans_list()
-        print(self.account_trans_list)
         self.child_json.append(account_base(self.account_trans_list))
         self.child_json.append(address_base(self.address_list))
         # self.child_json.append(transaction_base(self.transaction_list))
@@ -142,7 +141,6 @@ class NetworkGeneration:
 
     def update_account_trans_list(self, account_trans_list_temp):
         self.account_trans_list.append(account_trans_list_temp)
-        print(self.account_trans_list)
 
     def get_account_trans_list_account_based(self, transaction):
         account_trans_list_temp = {self.name: transaction["name"], "transaction_type": transaction["transaction_type"],
