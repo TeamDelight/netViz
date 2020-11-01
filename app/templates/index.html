@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 id="welcome-user">Hi, {{ current_user.username }}</h1>
+<h1 id="welcome-user">Hi, <span id="user_name" >{{ current_user.username }}</span></h1>
 
 <div class="container">
     <form class="autocomplete-form" action="/search" method="POST">
