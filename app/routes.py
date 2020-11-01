@@ -20,7 +20,7 @@ from app.models.models import User
 from werkzeug.urls import url_parse
 import json
 from app.db_integration.search_result_set import search_suggestion, search_result_data_fetch3, cus_name_fetch
-from app.db_integration.network_generation import network_json_gen
+from app.db_integration.network_generation import NetworkGeneration as ng
 import re
 import ast
 
@@ -89,16 +89,13 @@ def logout():
     return redirect(url_for('index'))
 
 
-"""
-Search list
-This method is used for getting the search suggestions for the user by fetching the values from database.
-Returns:
-    renders page for showing the suggestions.
-"""
-
-
 @app.route('/searchlist', methods=['GET', 'POST'])
 def searchlist():
+    """
+    Search list
+    This method is used for getting the search suggestions for the user by fetching the values from database.
+    :return: renders page for showing the suggestions.
+    """
     global customer_search
     search_value = request.args.get('autocomplete')
     customer_search = search_value
@@ -203,7 +200,8 @@ Returns:
 @app.route("/graph_generation/<customer_id>")
 def graph_generation(customer_id):
     customer_search = cus_name_fetch(customer_id)
-    json_data_net = str(network_json_gen(customer_id)).replace('"', "'")
+    net_graph = ng(customer_id)
+    json_data_net = str(net_graph.get_json_data()).replace('"', "'")
     return render_template("net_graph.html", data=json_data_net, customer_search=customer_search)
 
 
@@ -220,7 +218,8 @@ Returns:
 
 @app.route("/api/graph_generation/<customer_id>")
 def get_graph_data(customer_id):
-    json_data_net = str(network_json_gen(customer_id)).replace('"', "'")
+    net_graph = ng(customer_id)
+    json_data_net =  str(net_graph.get_json_data()).replace('"', "'")
     if json_data_net:
         return make_response(jsonify("graph_data:" + json_data_net)), 200
     else:
