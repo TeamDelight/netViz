@@ -11,7 +11,7 @@ body {
     min-width: 1400px;
     min-height: 800px;
 }
-any idea 
+
 .netviz{
     transition: transform 10s;
 }
@@ -142,6 +142,17 @@ h1 {
     margin: 3%;
     color: skyblue;
     font-size: 4em;
+    
+}
+
+#user_name{
+    font-style: italic;
+}
+
+#tooltip-search-bar{
+    color: rgba(135, 207, 235, 0.5);
+    margin: auto;
+    width: 50%;
 }
 
 /*Search box*/
@@ -245,6 +256,9 @@ tr:nth-child(even) {
     background-color: rgb(255, 255, 255, 0.03);
 }
 
+tr.table-data{
+    font-size: 1.2em;
+}
 
 tr.table-data:hover{
     background-color: black;

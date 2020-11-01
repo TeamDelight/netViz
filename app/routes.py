@@ -20,9 +20,15 @@ from app.models.models import User
 from werkzeug.urls import url_parse
 import json
 from app.db_integration.search_result_set import search_suggestion, search_result_data_fetch3, cus_name_fetch
-from app.db_integration.network_generation import write_file_path
+from app.db_integration.network_generation import NetworkGeneration as ng
 import re
+import ast
 
+"""
+Defining global variabels
+"""
+customer_search = ''
+base_page = "index.html"
 
 
 """Initial login page for the netviz application
@@ -37,15 +43,16 @@ Returns:
 @app.route('/index')
 @login_required
 def index():
-    return render_template("index.html")
+    return render_template(base_page)
 
 
-"""Verifying if the user is authenticated.
+"""
+Verifying if the user is authenticated.
 Description: This function authenticates if the current user is authenticated.
 for the complete session of execution.
 Returns:
-    pages that are rendered based on the activity
-    """
+pages that are rendered based on the activity
+"""
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -72,95 +79,149 @@ Logout the user from the application.
     for the complete session of execution.
 Returns:
     logout page for rendering in flask
-    """
+"""
 
 
 @app.route('/logout')
 def logout():
     logout_user()
-    
     return redirect(url_for('index'))
-
-
-names_list = []
-data_dict = []
-customer_search = ''
 
 
 @app.route('/searchlist', methods=['GET', 'POST'])
 def searchlist():
     """
-    search_value = request.form.getlist('autocomplete')[0]
-    search_list_response = get_search_list(search_value).json[0]
-    search_list = search_list_response.split(":")[1]
-    search_list = re.sub("[\[\]']", "", search_list)
-    search_list = search_list.split(",")
-    return Response(json.dumps(search_list), mimetype='application/json')
+    Search list
+    This method is used for getting the search suggestions for the user by fetching the values from database.
+    :return: renders page for showing the suggestions.
     """
-    
-    search_value = request.form['autocomplete']
-    search_list = get_search_list(search_value)
-            
-    return Response(json.dumps(search_list), mimetype='application/json')
-    
-    
-@app.route('/getsearchresult/<param>',methods=['GET'])
+    global customer_search
+    search_value = request.args.get('autocomplete')
+    customer_search = search_value
+    search_result = get_search_list(search_value)
+    if search_result[0].status_code == 200:
+        search_list_response = search_result[0].json
+        search_list = search_list_response.split(":")[1]
+        search_list = re.sub("[\[\]']", "", search_list)
+        search_list = search_list.split(", ")
+        return Response(json.dumps(search_list), mimetype='application/json')
+    else:
+        """
+        error message or page to be diplayed here
+        """
+        pass
+
+
+"""
+API end point for search suggestions
+This method loads the suggestions for API where first 15 records are found.
+
+parameters:
+values to be searched in the UI
+
+Returns:
+    returns json for data from the backend for search parameter passed.
+"""
+
+
+@app.route('/api/getsearchresult/<param>', methods=['GET'])
 def get_search_list(param):
     names_list = []
-    names_list.clear   
     names_list = search_suggestion(param)
-    
-    """return make_response(jsonify("names_list:" + str(names_list), 200))"""
-    return names_list
+    if names_list:
+        return make_response(jsonify("names_list:" + str(names_list))), 200
+    else:
+        return make_response(jsonify("error:No records found making the search")), 404
+
+
+"""
+Search list
+This method is used for getting the table populated for the given search parameter.
+Returns:
+    renders page for showing the result table.
+"""
 
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
-    print("search")   
-    data_dict = [] 
-    data_dict.clear()
+    result_set = []
+    result_set.clear()
+    global customer_search
     customer_search = request.form['autocomplete']
-    data_dict = get_search_result(customer_search)
-    """
-    if customer_search in names_list:
-        data_dict = get_search_result()
-        return render_template("index.html", resulted_dict=data_dict)
+    result_set = get_search_result(customer_search)
+
+    
+    if result_set[0].status_code == 200 and result_set[1] == 200:
+        result_set = result_set[0].json[10:]
+
+        try:
+            result_set = ast.literal_eval(result_set)
+        except ValueError:
+            result_set = str(result_set).replace('null','"NA"')
+            result_set = ast.literal_eval(result_set)
+        if result_set != []:
+            return render_template(base_page, resulted_dict=result_set, customer_search=customer_search)
+
     else:
-        return render_template("index.html", customer_search=customer_search)
-    """
-    if data_dict != []:
-        return render_template("index.html", resulted_dict=data_dict)
-    else:
-        return render_template("index.html", customer_search=customer_search)
-   
+        return render_template(base_page, customer_search=customer_search)
 
 
-@app.route('/getsearchresult/<param>',methods=['GET'])
+"""
+API end point for search suggestions
+This method loads the suggestions for API where first 15 records are found.
+
+parameters:
+values to be searched in the UI
+
+Returns:
+    returns json for data from the backend for search parameter passed.
+"""
+
+
+@app.route('/api/getsearchresultset/<param>', methods=['GET'])
 def get_search_result(param):
-    result_dict = search_result_data_fetch3(param)
-    
-    """
-    result_dict = []
-    for data in data_dict:
-        if data['name'] == customer_search:
-            result_dict.append(data)
-    return result_dict
-    """
-    
-    return result_dict
+    result_set = search_result_data_fetch3(param)
+    if result_set:
+        result_set = json.dumps(result_set)
+        return make_response(jsonify("dict_list:" + str(result_set))), 200
+    else:
+        return make_response(jsonify("error:No records found for given value")), 404
+
+
+"""
+Method to generate the network graph in UI
+parameters:
+Customer ID as parameter for generating the graph data
+
+Returns:
+    renders page for graph generations
+"""
 
 
 @app.route("/graph_generation/<customer_id>")
-def graph_generation(customer_id):    
+def graph_generation(customer_id):
     customer_search = cus_name_fetch(customer_id)
-    write_file_path(customer_id)
-    file_location = os.getcwd().replace("\\", "/") + "/graph_gen_sample.json"
-    
-    return render_template("net_graph.html", data=jsonData(file_location),customer_search = customer_search)
+    net_graph = ng(customer_id)
+    json_data_net = str(net_graph.get_json_data()).replace('"', "'")
+    return render_template("net_graph.html", data=json_data_net, customer_search=customer_search)
 
 
-def jsonData(filePath):
-    with open(filePath) as graph_data:
-        data = json.load(graph_data)
-        
-        return str(data)
+"""
+API end point for getting data of graph generations
+
+parameters:
+Customer ID as parameter for generating the graph data
+
+Returns:
+    returns the json data of graphs generation
+"""
+
+
+@app.route("/api/graph_generation/<customer_id>")
+def get_graph_data(customer_id):
+    net_graph = ng(customer_id)
+    json_data_net = str(net_graph.get_json_data()).replace('"', "'")
+    if json_data_net:
+        return make_response(jsonify("graph_data:" + json_data_net)), 200
+    else:
+        return make_response(jsonify("error:No records found for given value")), 404

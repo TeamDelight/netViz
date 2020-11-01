@@ -4,10 +4,10 @@ var width = window.innerWidth * .8,
     height = window.innerHeight * .8,
     root,
     gravity = 0.01,
-    charge = -100,
-    linkStrength = .1,
+    charge = -300,
+    linkStrength = 0.1,
     count = 0,
-    root_element, linkDistance = width * 0.02;
+    root_element, linkDistance = width * 0.03;
 
 window.addEventListener("resize", updateWindow);
 
@@ -88,15 +88,15 @@ function update() {
 
     nodeEnter.append('image')
         .attr('xlink:href', function (d) {
-            return images_path + "\\" + get_name(d.name) + ".png";
+            return images_path + "\\" + get_name(d) + ".png";
         })
         .attr("x", function (d) { return -25; })
         .attr("y", function (d) { return -25; })
-        .attr("height", 50)
-        .attr("width", 50);
+        .attr("height", 75)
+        .attr("width", 75);
 
     nodeEnter.append("text")
-        .attr("dy", function (d) { return 40; })
+        .attr("dy", function (d) { return 65; })
         .attr("dx", function (d) { return -25; })
         .attr("class", "texts")
         .style("font-size", "1.1em")
@@ -168,8 +168,8 @@ function tick() {
     node.attr("transform", function (d) {
         let translate;
         if (root_element != d.name) {
-            d.x =  Math.max(25, Math.min(width-50, d.x));
-            d.y = Math.max(25, Math.min(height-50, d.y));
+            d.x = Math.max(25, Math.min(width - 50, d.x));
+            d.y = Math.max(25, Math.min(height - 50, d.y));
             translate = "translate(" + d.x + "," + d.y + ")";
         } else {
             translate = "translate(" + width / 2 + "," + height / 2 + ")";
@@ -213,8 +213,21 @@ function getNodes(root) {
     return nodes;
 }
 
-function get_name(name) {
+function get_name(data) {
+    let name = data.name
     let isNum = false
+
+    if (name == "Customer") {
+        if (data.Gender == "Male") {
+            return "customer_b";
+        } else if (data.Gender == "Female") {
+            return "customer_g";
+        } else if (data.Gender == "N/A") {
+            return "customer_o"
+        } else {
+            return "customer"
+        }
+    }
 
     let lastChar;
     while (!isNum) {
@@ -267,9 +280,6 @@ function element_hold() {
     update();
 }
 
-// var div = d3.select("body").append("div")
-//     .attr("class", "tooltip")
-//     .style("opacity", 0);
 
 var hovercard = d3.select('body').append('div')
     .attr('class', 'hovercard')
@@ -279,7 +289,7 @@ var hovercard = d3.select('body').append('div')
 function get_hover_card(d) {
     let node_details;
     node_details = "<table class = 'hover-table'><tr><th  colspan='2' class='hover-title'><h2>" + d.name + "</h2></th></tr>";
-    for (key_value in d) {
+    for (let key_value in d) {
         if (!((key_value == "name") || (key_value == "id") || (key_value == "index") || (key_value == "weight") || (key_value == "x") || (key_value == "y") || (key_value == "px") || (key_value == "py") || (key_value == "fixed") || (key_value == "children") || (key_value == "_children"))) {
             node_details = node_details + "<tr class = 'hover-row'><td><b>" + key_value + ":</b></td><td class='hover-row'>" + d[key_value] + "</td></tr>";
         }

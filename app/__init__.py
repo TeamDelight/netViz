@@ -19,11 +19,10 @@ from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 login = LoginManager(app)
 bootstrap = Bootstrap(app)
 login.login_view = 'login'
-
 from app import routes, models

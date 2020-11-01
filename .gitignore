@@ -136,8 +136,11 @@ dmypy.json
 sample_networkx_file.py
 data.json
 test.adjlist.txt
-test.json
+expected.json
 test1 copy.txt
 test1.txt
 netviz.code-workspace
 python_doc_string.mustache
+actual.json
+graph_list.txt
+.idea/*

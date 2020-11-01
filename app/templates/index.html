@@ -1,21 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 id="welcome-user">Hi, {{ current_user.username }}</h1>
+<h1 id="welcome-user">Hi, <span id="user_name" >{{ current_user.username }}</span></h1>
 
 <div class="container">
     <form class="autocomplete-form" action="/search" method="POST">
         <input id="autocomplete" type="text" name="autocomplete" class="form-control"
             placeholder="Search for CustomerID, Customer Name, Address, Phone Number, A/C number"
-            onkeydown="searchAutoComplete(this.value)">
+            onkeyup="searchAutoComplete(this.value)">
         <button id="search-button" type="submit"><i class="fa fa-search"></i></button>
     </form>
+    <p id="tooltip-search-bar"> Enter minimum of two characters for suggestions.</p>
 </div>
 
 {% if resulted_dict %} {% if resulted_dict|length > 0 %}
-<div>   
-    <table id=search_result_table>
-        <caption id="table_caption">Search Results fetched for <span>{{resulted_dict[0].name}}</span></caption>
+<div>
+    <table class="search_table" id="search_result_table">
+        <caption id="table_caption">Number of records shown for <span>{{customer_search}}, {{resulted_dict|length}} </span></caption>
         <tr>
             <th id="table-customer-id"> Customer ID </th>
             <th id="table-customer-name"> Customer Name </th>
@@ -25,7 +26,7 @@
         </tr>
         {% for result in resulted_dict %}
         <tr class="table-data">
-            <td><a href="{{url_for('graph_generation',customer_id = result.id)}}"> {{ result.id }}</a> </td>
+            <td id = "table-link"><a href="{{url_for('graph_generation',customer_id = result.id)}}"> {{ result.id }}</a> </td>
             <td> {{ result.name }}</td>
             <td> {{ new_line(result.phone)}} </td>
             <td> {{ new_line(result.address) }}</td>
