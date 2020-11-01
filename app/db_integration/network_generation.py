@@ -98,8 +98,11 @@ class NetworkGeneration:
         self.transaction_list = get_unique_dic_values(
             self.name, self.transaction_list)
         self.address_list = get_unique_dic_values(self.name, self.address_list)
+        self.identification_doc_list = get_unique_dic_values(
+            self.name, self.identification_doc_list)
+        self.contacts_lists = get_unique_dic_values(
+            self.name, self.contacts_lists)
         graph_json = self.append_lists()
-        print(graph_json)
         return json.dumps(graph_json)
 
     def get_customer_details(self, data):
