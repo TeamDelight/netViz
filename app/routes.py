@@ -150,18 +150,20 @@ def search():
     customer_search = request.form['autocomplete']
     result_set = get_search_result(customer_search)
 
-    if result_set[0].status_code == 200:
+    
+    if result_set[0].status_code == 200 and result_set[1] == 200:
         result_set = result_set[0].json[10:]
-        result_set = ast.literal_eval(result_set)
+
+        try:
+            result_set = ast.literal_eval(result_set)
+        except ValueError:
+            result_set = str(result_set).replace('null','"NA"')
+            result_set = ast.literal_eval(result_set)
         if result_set != []:
             return render_template(base_page, resulted_dict=result_set, customer_search=customer_search)
-        else:
-            return render_template(base_page, customer_search=customer_search)
+
     else:
-        """
-        error message or page to be diplayed here
-        """
-        pass
+        return render_template(base_page, customer_search=customer_search)
 
 
 """
@@ -218,7 +220,7 @@ Returns:
 @app.route("/api/graph_generation/<customer_id>")
 def get_graph_data(customer_id):
     net_graph = ng(customer_id)
-    json_data_net =  str(net_graph.get_json_data()).replace('"', "'")
+    json_data_net = str(net_graph.get_json_data()).replace('"', "'")
     if json_data_net:
         return make_response(jsonify("graph_data:" + json_data_net)), 200
     else:

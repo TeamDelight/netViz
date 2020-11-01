@@ -15,8 +15,8 @@
 
 {% if resulted_dict %} {% if resulted_dict|length > 0 %}
 <div>
-    <table class="search_table" id=search_result_table>
-        <caption id="table_caption">Search Results fetched for <span>{{customer_search}}</span></caption>
+    <table class="search_table" id="search_result_table">
+        <caption id="table_caption">Number of records shown for <span>{{customer_search}}, {{resulted_dict|length}} </span></caption>
         <tr>
             <th id="table-customer-id"> Customer ID </th>
             <th id="table-customer-name"> Customer Name </th>
@@ -26,7 +26,7 @@
         </tr>
         {% for result in resulted_dict %}
         <tr class="table-data">
-            <td><a href="{{url_for('graph_generation',customer_id = result.id)}}"> {{ result.id }}</a> </td>
+            <td id = "table-link"><a href="{{url_for('graph_generation',customer_id = result.id)}}"> {{ result.id }}</a> </td>
             <td> {{ result.name }}</td>
             <td> {{ new_line(result.phone)}} </td>
             <td> {{ new_line(result.address) }}</td>
