@@ -144,24 +144,23 @@ Returns:
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
-    result_set = []
-    result_set.clear()
     global customer_search
     customer_search = request.form['autocomplete']
-    result_set = get_search_result(customer_search)
-
-    
-    if result_set[0].status_code == 200 and result_set[1] == 200:
-        result_set = result_set[0].json[10:]
-
-        try:
-            result_set = ast.literal_eval(result_set)
-        except ValueError:
-            result_set = str(result_set).replace('null','"NA"')
-            result_set = ast.literal_eval(result_set)
-        if result_set != []:
-            return render_template(base_page, resulted_dict=result_set, customer_search=customer_search)
-
+    if customer_search:
+        result_set = []
+        result_set.clear()
+        result_set = get_search_result(customer_search)
+        if result_set[0].status_code == 200 and result_set[1] == 200:
+            result_set = result_set[0].json[10:]
+            try:
+                result_set = ast.literal_eval(result_set)
+            except ValueError:
+                result_set = str(result_set).replace('null', '"NA"')
+                result_set = ast.literal_eval(result_set)
+            if result_set != []:
+                return render_template(base_page, resulted_dict=result_set, customer_search=customer_search)
+        else:
+            return render_template(base_page, customer_search=customer_search)
     else:
         return render_template(base_page, customer_search=customer_search)
 
