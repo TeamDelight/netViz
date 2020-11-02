@@ -103,11 +103,11 @@ function update() {
         .style("left", "-25px")
         .style('fill', "white")
         .text(function (d) {
-            if (d.name == "email"){
+            if (d.name == "email") {
                 return d.name
             }
             name = d.name.charAt(0).toUpperCase() + d.name.slice(1).toLowerCase();
-            name = name.replace("_"," ")
+            name = name.replace("_", " ")
             return name;
         })
         ;
@@ -219,6 +219,7 @@ function getNodes(root) {
 }
 
 function get_name(data) {
+    let name_list = ["trn", "ac", "accounts", "business", "address", "documents", "phone", "email", "contacts", "passport", "residential", "driving_license"]
     let name = data.name
     let isNum = false
 
@@ -238,9 +239,19 @@ function get_name(data) {
     while (!isNum) {
         lastChar = name.substr(-1);
         if (isNaN(lastChar)) {
-            return name;
+            name = name.toLowerCase();
+            console.log(name)
+            if (name_list.includes(name)) {
+                return name;
+            } else {
+                return "unknown";
+            }
         } else {
-            name = name.substr(0, name.length - 1)
+            try {
+                name = name.substr(0, name.length - 1)
+            } catch (err) {
+                name = "unknown";
+            }
         }
     }
 }
