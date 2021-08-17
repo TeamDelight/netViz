@@ -144,3 +144,4 @@ python_doc_string.mustache
 actual.json
 graph_list.txt
 .idea/*
+/support/
